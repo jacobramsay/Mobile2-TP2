@@ -22,7 +22,6 @@ class QuestionService {
         service = retrofit.create(Service::class.java)
     }
 
-    @Background
     fun getRandomQuestion(onSuccess: (QuestionModel) -> Unit,
                           onConnectivityError: () -> Unit,
                           onServerError: () -> Unit){
