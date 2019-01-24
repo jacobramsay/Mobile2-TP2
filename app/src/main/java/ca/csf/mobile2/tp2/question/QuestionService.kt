@@ -1,6 +1,9 @@
 package ca.csf.mobile2.tp2.question
 
+import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.androidannotations.annotations.Background
+import org.androidannotations.annotations.EBean
 import retrofit2.Call
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
@@ -16,12 +19,11 @@ class QuestionService {
     init {
         val retrofit = Retrofit.Builder()
             .baseUrl("https://m2t2.csfpwmjv.tk/")
-            .addConverterFactory(JacksonConverterFactory.create())
+            .addConverterFactory(JacksonConverterFactory.create(ObjectMapper().registerKotlinModule()))
             .build()
 
         service = retrofit.create(Service::class.java)
     }
-
     fun getRandomQuestion(onSuccess: (QuestionModel) -> Unit,
                           onConnectivityError: () -> Unit,
                           onServerError: () -> Unit){
@@ -32,14 +34,16 @@ class QuestionService {
             }else{
                 onServerError()
             }
+
         }
         catch (e: IOException){
             onConnectivityError()
+
         }
     }
 
     private interface Service {
-        @GET("api/v1/question/random")
+        @GET("/api/v1/question/random")
         fun getRandomQuestion(): Call<QuestionModel>
 
         //@POST
