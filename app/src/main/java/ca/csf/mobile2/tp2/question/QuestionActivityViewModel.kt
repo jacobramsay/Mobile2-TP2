@@ -7,79 +7,82 @@ import org.parceler.Parcel
 import android.os.Parcelable
 import android.widget.Button
 import org.parceler.ParcelConstructor
+import java.util.*
 
 @Parcel(Parcel.Serialization.BEAN)
-class QuestionActivityViewModel @ParcelConstructor constructor(questionModel: QuestionModel): BaseObservable() {
+class QuestionActivityViewModel @ParcelConstructor constructor(questionModel: QuestionModel) : BaseObservable() {
 
     var isAskingQuestion = false
+        private set
     var isShowingResults = false
-    var isHavingConnectivityError = false
-    var isHavingServerError = false
+        private set
+    var isHavingError = false
+        private set
     var isLoading = false
 
-    var currentError : String = ""
-    set(value){
-        field = value
-        notifyChange()
-    }
+    var currentError: String = ""
+        set(value) {
+            field = value
+            notifyChange()
+        }
 
 
     var questionModel: QuestionModel = questionModel
-    set(value) {
-        field = value
-        notifyChange()
-    }
+        set(value) {
+            field = value
+            notifyChange()
+        }
 
+    @get:Bindable
+    val id: String
+        get() = questionModel.id
     @get:Bindable
     val choice1: String
         get() = questionModel.choice1
-    val choice2 : String
+    @get:Bindable
+    val choice2: String
         get() = questionModel.choice2
-    val text : String
+    @get:Bindable
+    val text: String
         get() = questionModel.text
+    @get:Bindable
+    val choice1Result: String
+        get() = questionModel.getChoice1Result()
+    @get:Bindable
+    val choice2Result: String
+        get() = questionModel.getChoice2Result()
+    @get:Bindable
+    val isFrench: Boolean
+        get() = Locale.getDefault().getDisplayLanguage() == ("French");
 
-
-    fun AssignLoading(){
+    fun assignLoading() {
         isAskingQuestion = false
         isShowingResults = false
-        isHavingConnectivityError = false
-        isHavingServerError = false
+        isHavingError = false
         isLoading = true
         notifyChange()
     }
 
-    fun AssignAskingQuestion(){
+    fun assignAskingQuestion() {
         isAskingQuestion = true
         isShowingResults = false
-        isHavingConnectivityError = false
-        isHavingServerError = false
+        isHavingError = false
         isLoading = false
         notifyChange()
     }
 
-    fun AssignConnectivityError(){
+    fun assignError() {
         isAskingQuestion = false
         isShowingResults = false
-        isHavingConnectivityError = true
-        isHavingServerError = false
+        isHavingError = true
         isLoading = false
         notifyChange()
     }
 
-    fun AssignServerError(){
-        isAskingQuestion = false
-        isShowingResults = false
-        isHavingConnectivityError = false
-        isHavingServerError = true
-        isLoading = false
-        notifyChange()
-    }
-
-    fun AssignShowingResults() {
+    fun assignShowingResults() {
         isAskingQuestion = false
         isShowingResults = true
-        isHavingConnectivityError = false
-        isHavingServerError = false
+        isHavingError = false
         isLoading = false
         notifyChange()
     }

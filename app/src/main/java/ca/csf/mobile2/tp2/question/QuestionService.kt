@@ -5,16 +5,16 @@ import com.fasterxml.jackson.module.kotlin.registerKotlinModule
 import org.androidannotations.annotations.Background
 import org.androidannotations.annotations.EBean
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.jackson.JacksonConverterFactory
 import retrofit2.create
-import retrofit2.http.GET
-import retrofit2.http.POST
+import retrofit2.http.*
 import java.io.IOException
 
 class QuestionService {
 
-    private val service : Service
+    private val service: Service
 
     init {
         val retrofit = Retrofit.Builder()
@@ -24,21 +24,59 @@ class QuestionService {
 
         service = retrofit.create(Service::class.java)
     }
-    fun getRandomQuestion(onSuccess: (QuestionModel) -> Unit,
-                          onConnectivityError: () -> Unit,
-                          onServerError: () -> Unit){
+
+    fun getRandomQuestion(
+        onSuccess: (QuestionModel) -> Unit,
+        onConnectivityError: () -> Unit,
+        onServerError: () -> Unit
+    ) {
         try {
             val response = service.getRandomQuestion().execute()
-            if(response.isSuccessful){
+            if (response.isSuccessful) {
                 onSuccess(response.body()!!)
-            }else{
+            } else {
                 onServerError()
             }
 
-        }
-        catch (e: IOException){
+        } catch (e: IOException) {
             onConnectivityError()
 
+        }
+    }
+
+    fun postChoice1Question(
+        id: String,
+        onSuccess: () -> Unit,
+        onConnectivityError: () -> Unit,
+        onServerError: () -> Unit
+    ) {
+        try {
+            val reponse = service.postChoice1Question(id).execute()
+            if (reponse.isSuccessful) {
+                onSuccess()
+            } else {
+                onServerError()
+            }
+        } catch (e: IOException) {
+            onConnectivityError()
+        }
+    }
+
+    fun postChoice2Question(
+        id: String,
+        onSuccess: () -> Unit,
+        onConnectivityError: () -> Unit,
+        onServerError: () -> Unit
+    ) {
+        try {
+            val reponse = service.postChoice2Question(id).execute()
+            if (reponse.isSuccessful) {
+                onSuccess()
+            } else {
+                onServerError()
+            }
+        } catch (e: IOException) {
+            onConnectivityError()
         }
     }
 
@@ -46,6 +84,10 @@ class QuestionService {
         @GET("/api/v1/question/random")
         fun getRandomQuestion(): Call<QuestionModel>
 
-        //@POST
+        @POST("/api/v1/question/{id}/choose1")
+        fun postChoice1Question(@Path("id") id: String): Call<QuestionModel>
+
+        @POST("/api/v1/question/{id}/choose2")
+        fun postChoice2Question(@Path("id") id: String): Call<QuestionModel>
     }
 }

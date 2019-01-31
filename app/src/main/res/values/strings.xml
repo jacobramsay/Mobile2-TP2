@@ -11,12 +11,12 @@
     <string name="text_report_thanks">This question has been reported. Thank you!</string>
 
     <string name="text_btn_create">Create question</string>
-    <string name="text_btn_retry">Retry</string>
+    <string name="text_btn_retryEN">Retry</string>
     <string name="text_btn_report">Report</string>
 
-    <string name="text_error">Error</string>
-    <string name="text_error_internet">No internet connectivity. Please try again later.</string>
-    <string name="text_error_server">Something went wrong. Please try again later.</string>
+    <string name="text_errorEN">Error</string>
+    <string name="text_error_internetEN">No internet connectivity. Please try again later.</string>
+    <string name="text_error_serverEN">Something went wrong. Please try again later.</string>
     <string name="text_error_field">Please fill this field.</string>
     <string name="text_error_validation">Please fill all the fields.</string>
 
