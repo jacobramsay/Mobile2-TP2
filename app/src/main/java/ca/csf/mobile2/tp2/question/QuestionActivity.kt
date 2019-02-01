@@ -18,13 +18,12 @@ class QuestionActivity : AppCompatActivity() {
     protected lateinit var viewModel : QuestionActivityViewModel
 
     protected fun onCreate(@BindingObject dataBinder : ActivityQuestionBinding) {
+        questionService = QuestionService()
         if(!this::viewModel.isInitialized){
             viewModel = QuestionActivityViewModel(QuestionModel())
-
+            getRandomQuestion()
         }
         dataBinder.viewModel = viewModel
-        questionService = QuestionService()
-        getRandomQuestion()
 
     }
     @Background
